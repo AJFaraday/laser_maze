@@ -2,8 +2,10 @@ function Cell(html_row, row_index, cell_index) {
   this.filled = false;
   this.edge = false;
   this.laser = false;
+  this.beam = false;
   this.x = cell_index;
   this.y = row_index;
+  
   //setup html
   this.html_cell = $('<span>').addClass('cell');
   this.html_cell.html('&nbsp');
@@ -20,6 +22,8 @@ function Cell(html_row, row_index, cell_index) {
   );
 
   this.toggle = function() {
+    if (this.laser) {return true}
+    $('span.beam').removeClass('beam').html('&nbsp;');
     if(this.filled) {
       this.empty();
     } else {
@@ -35,9 +39,9 @@ function Cell(html_row, row_index, cell_index) {
     if(this.edge) {return false}
     var me = this;
     this.html_cell.addClass('flash');
-    setInterval(
+    setTimeout(
       function() {me.html_cell.removeClass('flash')},
-      2000
+      1000
     )
   };
 
@@ -90,11 +94,13 @@ function Cell(html_row, row_index, cell_index) {
 
   this.empty = function() {
     this.filled = false;
+    this.laser = false;
+    this.beam = false;
     this.draw_wall(true);
   };
 
   this.draw_wall = function(propogate) {
-    if (this.laser) {return true}
+    if(this.laser) {return true}
 
     if(this.filled) {
       if(this.has_horizontal_neighbours() && this.has_vertical_neighbours()) {
@@ -119,6 +125,23 @@ function Cell(html_row, row_index, cell_index) {
         }
       )
     }
+  };
+
+  this.become_laser = function() {
+    this.change_to('*');
+    this.html_cell.addClass('laser');
+    this.laser = true;
+    this.filled = false;
+    LazerMaze.get_lasers();
+  };
+
+  this.remove_laser = function() {
+    this.change_to('&nbsp;');
+    this.laser = false;
+    this.filled = false;
+    LazerMaze.get_lasers();
   }
+    
+    
 }
 

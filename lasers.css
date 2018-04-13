@@ -3,7 +3,7 @@
     color: #ff0000;
   }
   to {
-    color: #000000;
+    color: #cccccc;
   }
 }
 
@@ -15,11 +15,20 @@
   background-color: #00ff00;
   color: #000000;
   font-size: 20px;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.red_button {
+  background-color: #FF0000;
 }
 
 #maze {
   background-color: #dddddd;
-  padding:5px;
+  padding: 5px;
   border-radius: 5px;
 }
 
@@ -42,13 +51,17 @@ span.cell {
   color: #000000;
 }
 
-span.flash {
+span.beam {
+  color: #cccccc;
+}
+
+span.flash{
   animation-name: flash;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
 }
 
 span.laser {
-  color: #666666;
+  color: #FF0000;
 }

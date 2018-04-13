@@ -4,6 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type=text/javascript src="cell.js"></script>
     <script type=text/javascript src="row.js"></script>
+    <script type=text/javascript src="beam.js"></script>
     <script type=text/javascript src="laser_maze.js"></script>
 
     <link rel="stylesheet" type="text/css" href="lasers.css">
@@ -12,12 +13,15 @@
       $(document).ready(function() {
         LazerMaze.init(15, 15);
         LazerMaze.randomise(20);
+        LazerMaze.place_laser(5,10)
       });
     </script>
   </head>
   <body>
+    <div class="button red_button" onclick="LazerMaze.fire_lasers();">FIRE!</div>
+    <br clear="both"/>
     <div id="maze"></div>
-
+    <br clear="both"/>
     <div class="button" onclick="LazerMaze.clear();">Clear</div>
     <div class="button" onclick="LazerMaze.randomise(20);">Add Random</div>
   </body>

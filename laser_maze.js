@@ -63,7 +63,7 @@ LazerMaze = {
   //////////////
   // input control
   //////////////
-  
+
   start_draw: function() {
     LazerMaze.drawing = true;
     if(!LazerMaze.current_cell.edge) {
@@ -87,14 +87,17 @@ LazerMaze = {
       function(idx, row) {
         $.each(
           row.cells,
-          function(idx, cell){
+          function(idx, cell) {
             if(!cell.edge) {
               cell.empty();
             }
           }
         )
       }
-    )
+    );
+    $.each(this.lasers, function(idx, cell) {cell.remove_laser()});
+    this.lasers = [];
+    $('spam.beam').removeClass('beam');
   },
 
   randomise: function(chance) {
@@ -103,7 +106,7 @@ LazerMaze = {
       function(idx, row) {
         $.each(
           row.cells,
-          function(idx, cell){
+          function(idx, cell) {
             if(!cell.edge && LazerMaze.one_in(chance)) {
               cell.toggle();
             }
@@ -121,12 +124,49 @@ LazerMaze = {
   // lasers
   //////////////
 
-  place_laser: function(x,y) {
-    
+  lasers: [],
+  get_lasers: function() {
+    this.lasers = [];
+    $.each(
+      this.rows,
+      function(idx, row) {
+        $.each(
+          row.cells,
+          function(idx, cell) {
+            if(cell.laser) {
+              LazerMaze.lasers.push(cell);
+            }
+          }
+        )
+      }
+    )
   },
-  
+
+  place_laser: function(x, y) {
+    var cell = this.cell(x, y);
+    if(cell === null || cell.edge) { return true }
+    cell.become_laser();
+  },
+
+  beams: [],
   fire_lasers: function() {
-    
+    this.beams = [];
+    $.each(
+      this.lasers,
+      function(idx, laser) {
+        LazerMaze.beams.push(new Beam(laser.x, laser.y, 1));
+      }
+    );
+    setInterval(LazerMaze.move_beams, 200)
+  },
+
+  move_beams: function() {
+    $.each(
+      LazerMaze.beams,
+      function(idx, beam) {
+        beam.move();
+      }
+    )
   }
 
 };
