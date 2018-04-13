@@ -1,0 +1,39 @@
+@keyframes flash {
+  from {
+    color: #ff0000;
+  }
+  to {
+    color: #000000;
+  }
+}
+
+#maze {
+  background-color: #dddddd;
+  padding:5px;
+  border-radius: 5px;
+}
+
+.row {
+  height: 20px;
+  user-select: none;
+}
+
+span.cell {
+  width: 8px;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  text-align: center;
+  font-size: 20px;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  color: #000000;
+}
+
+span.flash {
+  animation-name: flash;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
