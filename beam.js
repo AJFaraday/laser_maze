@@ -2,6 +2,7 @@ function Beam(x, y, dir) {
   this.x = x;
   this.y = y;
   this.dir = dir;
+  this.active = true;
 
   /*
    directions
@@ -12,15 +13,18 @@ function Beam(x, y, dir) {
    */
 
   this.move = function() {
+    if(!this.active) {return true}
     this.get_targets();
     switch(this.dir) {
       case 1:
         this.move_ne();
     }
   };
-  
+
   this.move_ne = function() {
-    if(!this.targets.ne.filled) {
+    if(this.targets.ne.filled) {
+      this.active = false;
+    } else {
       this.go_to(this.targets.ne);
     }
   };
@@ -52,5 +56,5 @@ function Beam(x, y, dir) {
       w: LazerMaze.cell((this.x - 1), this.y)
     }
   }
-  
+
 }
