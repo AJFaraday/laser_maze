@@ -11,10 +11,14 @@
     <script type="text/javascript">
       $(document).ready(function() {
         LazerMaze.init(15, 15);
+        LazerMaze.randomise(20);
       });
     </script>
   </head>
   <body>
     <div id="maze"></div>
+
+    <div class="button" onclick="LazerMaze.clear();">Clear</div>
+    <div class="button" onclick="LazerMaze.randomise(20);">Add Random</div>
   </body>
 </html>

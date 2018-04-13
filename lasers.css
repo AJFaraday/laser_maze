@@ -7,6 +7,16 @@
   }
 }
 
+.button {
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  float: left;
+  background-color: #00ff00;
+  color: #000000;
+  font-size: 20px;
+}
+
 #maze {
   background-color: #dddddd;
   padding:5px;
@@ -20,6 +30,7 @@
 
 span.cell {
   width: 8px;
+  height: 20px;
   user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -36,4 +47,8 @@ span.flash {
   animation-duration: 2s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
+}
+
+span.laser {
+  color: #666666;
 }
