@@ -14,6 +14,10 @@ function Beam(x, y, dir) {
     LazerMaze.beams.splice(LazerMaze.beams.indexOf(this),1);
   };
 
+  this.bonk = function() {
+    //TODO
+    // Sound.play(x, y)
+  };
 
   this.move = function() {
     if (this.deleted) {return}
@@ -44,11 +48,14 @@ function Beam(x, y, dir) {
     } else if(!this.targets.n.filled) {
       this.dir = 'nw';
       this.go_to(this.targets.n);
+      this.bonk();
     } else if(!this.targets.e.filled) {
       this.dir = 'se';
       this.go_to(this.targets.e);
+      this.bonk();
     } else {
       this.dir = 'sw';
+      this.bonk();
     }
   };
 
@@ -58,11 +65,14 @@ function Beam(x, y, dir) {
     } else if(!this.targets.n.filled) {
       this.dir = 'ne';
       this.go_to(this.targets.n);
+      this.bonk();
     } else if(!this.targets.w.filled) {
       this.dir = 'sw';
       this.go_to(this.targets.w) ;
+      this.bonk();
     } else {
       this.dir = 'se';
+      this.bonk();
     }
   };
 
@@ -72,11 +82,14 @@ function Beam(x, y, dir) {
     } else if(!this.targets.s.filled) {
       this.dir = 'sw';
       this.go_to(this.targets.s);
+      this.bonk();
     } else if(!this.targets.e.filled) {
       this.dir = 'ne';
       this.go_to(this.targets.e) ;
+      this.bonk();
     } else {
       this.dir = 'nw';
+      this.bonk();
     }
   };
 
@@ -86,11 +99,14 @@ function Beam(x, y, dir) {
     } else if(!this.targets.s.filled) {
       this.dir = 'se';
       this.go_to(this.targets.s);
+      this.bonk();
     } else if(!this.targets.w.filled) {
-      this.dir = 'nw';//????
+      this.dir = 'nw';
       this.go_to(this.targets.w) ;
+      this.bonk();
     } else {
       this.dir = 'ne';
+      this.bonk();
     }
 
   };
