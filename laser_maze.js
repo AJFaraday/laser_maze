@@ -2,7 +2,10 @@ LazerMaze = {
   rows: [],
   drawing: false,
 
-  init: function(height, width) {
+  init: function(width, height) {
+    this.height = height;
+    this.width = width;
+
     this.holder = $('#maze');
     this.populate(height, width);
     this.draw_frame();
@@ -40,6 +43,7 @@ LazerMaze = {
   },
 
   set_size: function(height, width) {
+    this.beams = [];
     this.holder.css('height', 20 * height);
     this.holder.css('width', ((12 * width) + 2));
   },
@@ -60,21 +64,37 @@ LazerMaze = {
     return row.cells[x];
   },
 
+  random_cell: function() {
+    return this.cell(
+      Math.floor(Math.random() * (this.width - 2)) + 1,
+      Math.floor(Math.random() * (this.height - 2)) + 1
+    )
+  },
+
+  add_laser: function(x, y) {
+    this.cell(x, y).become_laser();
+  },
+
+  add_random_laser: function() {
+    this.random_cell().become_laser();
+  },
   //////////////
   // input control
   //////////////
 
   start_draw: function() {
-    LazerMaze.drawing = true;
-    if(!LazerMaze.current_cell.edge) {
+    if(LazerMaze.current_cell.edge) {
+    } else if(LazerMaze.current_cell.laser) {
+      LazerMaze.moving_laser = true;
+    } else {
+      LazerMaze.drawing = true;
       LazerMaze.current_cell.toggle();
     }
   },
 
   end_draw: function() {
-    if(LazerMaze.drawing) {
-      LazerMaze.drawing = false;
-    }
+    LazerMaze.drawing = false;
+    LazerMaze.moving_laser = false;
   },
 
   //////////////
@@ -88,16 +108,13 @@ LazerMaze = {
         $.each(
           row.cells,
           function(idx, cell) {
-            if(!cell.edge) {
+            if(!cell.edge && !cell.laser) {
               cell.empty();
             }
           }
         )
       }
     );
-    $.each(this.lasers, function(idx, cell) {cell.remove_laser()});
-    this.lasers = [];
-    $('spam.beam').removeClass('beam');
   },
 
   randomise: function(chance) {
@@ -149,24 +166,34 @@ LazerMaze = {
   },
 
   beams: [],
+  beam_directions: ['ne', 'se', 'sw', 'nw'],
   fire_lasers: function() {
-    this.beams = [];
+    var new_beams = [];
     $.each(
       this.lasers,
       function(idx, laser) {
-        LazerMaze.beams.push(new Beam(laser.x, laser.y, 1));
+        new_beams.push(
+          new Beam(
+            laser.x,
+            laser.y,
+            LazerMaze.beam_directions[Math.floor(Math.random() * 4)]
+          )
+        );
       }
     );
-    setInterval(LazerMaze.move_beams, 200)
+    $.each(new_beams, function(idx, beam) {beam.start()});
+    this.beams = this.beams.concat(new_beams)
   },
 
-  move_beams: function() {
-    $.each(
-      LazerMaze.beams,
-      function(idx, beam) {
-        beam.move();
-      }
-    )
+  clear_beams: function() {
+    $.each(this.beams, function(idx, beam) {beam.stop()});
+    this.beams = [];
+    $('.beam').html('&nbsp;').css({color: '#000000'}).removeClass('beam');
+    $('.cell').not('.laser').css({color: '#000000'});
+  },
+
+  clear_lasers: function() {
+    $.each(this.lasers, function(idx,cell){cell.remove_laser()});
   }
 
 };

@@ -1,12 +1,3 @@
-@keyframes flash {
-  from {
-    color: #ff0000;
-  }
-  to {
-    color: #cccccc;
-  }
-}
-
 .button {
   padding: 5px;
   border-radius: 5px;
@@ -30,6 +21,16 @@
   background-color: #dddddd;
   padding: 5px;
   border-radius: 5px;
+  float: left;
+}
+
+#buttons {
+  float: left;
+  padding: 10px;
+}
+
+#buttons h2 {
+  line-height:0px;
 }
 
 .row {
@@ -53,13 +54,6 @@ span.cell {
 
 span.beam {
   color: #cccccc;
-}
-
-span.flash{
-  animation-name: flash;
-  animation-duration: 1s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
 }
 
 span.laser {

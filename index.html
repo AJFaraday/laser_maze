@@ -2,6 +2,7 @@
 <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type=text/javascript src="cell.js"></script>
     <script type=text/javascript src="row.js"></script>
     <script type=text/javascript src="beam.js"></script>
@@ -11,18 +12,26 @@
 
     <script type="text/javascript">
       $(document).ready(function() {
-        LazerMaze.init(15, 15);
+        LazerMaze.init(60, 30);
         LazerMaze.randomise(20);
-        LazerMaze.place_laser(5,10)
+        LazerMaze.place_laser(5, 10)
       });
     </script>
   </head>
   <body>
-    <div class="button red_button" onclick="LazerMaze.fire_lasers();">FIRE!</div>
-    <br clear="both"/>
+
     <div id="maze"></div>
-    <br clear="both"/>
-    <div class="button" onclick="LazerMaze.clear();">Clear</div>
-    <div class="button" onclick="LazerMaze.randomise(20);">Add Random</div>
+    <div id="buttons">
+      <h2>Lasers</h2>
+      <div class="button red_button" onclick="LazerMaze.fire_lasers();">FIRE!</div>
+      <div class="button" onclick="LazerMaze.clear_beams();">Stop</div>
+      <br clear="both"/>
+      <div class="button" onclick="LazerMaze.add_random_laser();">Add</div>
+      <div class="button" onclick="LazerMaze.clear_lasers();">Clear</div>
+      <br clear="both"/>
+      <h2>Walls</h2>
+      <div class="button" onclick="LazerMaze.clear();">Clear</div>
+      <div class="button" onclick="LazerMaze.randomise(20);">Add Random</div>
+    </div>
   </body>
 </html>

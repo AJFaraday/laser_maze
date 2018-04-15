@@ -5,7 +5,7 @@ function Cell(html_row, row_index, cell_index) {
   this.beam = false;
   this.x = cell_index;
   this.y = row_index;
-  
+
   //setup html
   this.html_cell = $('<span>').addClass('cell');
   this.html_cell.html('&nbsp');
@@ -18,12 +18,20 @@ function Cell(html_row, row_index, cell_index) {
     function() {
       LazerMaze.current_cell = cell;
       if(LazerMaze.drawing && !cell.edge) {cell.toggle()}
+      if(LazerMaze.moving_laser && !cell.edge) {cell.become_laser()}
+    }
+  );
+
+  this.html_cell.on(
+    'mouseleave',
+    function() {
+      if(LazerMaze.moving_laser && !cell.edge) {cell.empty()}
     }
   );
 
   this.toggle = function() {
-    if (this.laser) {return true}
-    $('span.beam').removeClass('beam').html('&nbsp;');
+    if(this.laser) {return true}
+    //$('span.beam').removeClass('beam').html('&nbsp;');
     if(this.filled) {
       this.empty();
     } else {
@@ -37,12 +45,19 @@ function Cell(html_row, row_index, cell_index) {
 
   this.flash = function() {
     if(this.edge) {return false}
-    var me = this;
-    this.html_cell.addClass('flash');
-    setTimeout(
-      function() {me.html_cell.removeClass('flash')},
-      1000
-    )
+    this
+      .html_cell
+      .stop()
+      .css({color: '#ff0000'})
+      .animate(
+        {color: '#cccccc'},
+        {
+          duration: 1000,
+          complete: function() {
+            $(this).animate({color: '#dddddd'}, {duration: 10000})
+          }
+        }
+      );
   };
 
   this.neighbours = function() {
@@ -88,6 +103,7 @@ function Cell(html_row, row_index, cell_index) {
   };
 
   this.fill = function() {
+    this.html_cell.stop().css({color:'#000000'});
     this.filled = true;
     this.draw_wall(true);
   };
@@ -129,7 +145,7 @@ function Cell(html_row, row_index, cell_index) {
 
   this.become_laser = function() {
     this.change_to('*');
-    this.html_cell.addClass('laser');
+    this.html_cell.addClass('laser').css({color: '#ff0000'});
     this.laser = true;
     this.filled = false;
     LazerMaze.get_lasers();
@@ -141,7 +157,7 @@ function Cell(html_row, row_index, cell_index) {
     this.filled = false;
     LazerMaze.get_lasers();
   }
-    
-    
+
+
 }
 

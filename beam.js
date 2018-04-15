@@ -2,42 +2,122 @@ function Beam(x, y, dir) {
   this.x = x;
   this.y = y;
   this.dir = dir;
-  this.active = true;
 
-  /*
-   directions
-   1: ne
-   2: se
-   3: sw
-   4: nw
-   */
+  this.start = function() {
+    var beam = this;
+    beam.process = setInterval(function() {beam.move()}, 200);
+  };
+
+  this.stop = function() {
+    console.log('stopping beam at '+this.x+':'+this.y);
+    clearInterval(this.process);
+    LazerMaze.beams.splice(LazerMaze.beams.indexOf(this),1);
+  };
+
 
   this.move = function() {
-    if(!this.active) {return true}
+    if (this.deleted) {return}
     this.get_targets();
+    if(this.targets[this.dir].laser) {
+      this.stop();
+      return false;
+    }
     switch(this.dir) {
-      case 1:
+      case 'ne':
         this.move_ne();
+        break;
+      case 'se':
+        this.move_se();
+        break;
+      case 'sw':
+        this.move_sw();
+        break;
+      case 'nw':
+        this.move_nw();
+        break;
     }
   };
 
   this.move_ne = function() {
-    if(this.targets.ne.filled) {
-      this.active = false;
+    if(!this.targets.ne.filled) {
+      this.go_to(this.targets.ne)
+    } else if(!this.targets.n.filled) {
+      this.dir = 'nw';
+      this.go_to(this.targets.n);
+    } else if(!this.targets.e.filled) {
+      this.dir = 'se';
+      this.go_to(this.targets.e);
     } else {
-      this.go_to(this.targets.ne);
+      this.dir = 'sw';
     }
   };
 
+  this.move_nw = function() {
+    if(!this.targets.nw.filled) {
+      this.go_to(this.targets.nw)
+    } else if(!this.targets.n.filled) {
+      this.dir = 'ne';
+      this.go_to(this.targets.n);
+    } else if(!this.targets.w.filled) {
+      this.dir = 'sw';
+      this.go_to(this.targets.w) ;
+    } else {
+      this.dir = 'se';
+    }
+  };
+
+  this.move_se = function() {
+    if(!this.targets.se.filled) {
+      this.go_to(this.targets.se)
+    } else if(!this.targets.s.filled) {
+      this.dir = 'sw';
+      this.go_to(this.targets.s);
+    } else if(!this.targets.e.filled) {
+      this.dir = 'ne';
+      this.go_to(this.targets.e) ;
+    } else {
+      this.dir = 'nw';
+    }
+  };
+
+  this.move_sw = function() {
+    if(!this.targets.sw.filled) {
+      this.go_to(this.targets.sw)
+    } else if(!this.targets.s.filled) {
+      this.dir = 'se';
+      this.go_to(this.targets.s);
+    } else if(!this.targets.w.filled) {
+      this.dir = 'nw';//????
+      this.go_to(this.targets.w) ;
+    } else {
+      this.dir = 'ne';
+    }
+
+  };
+
   this.go_to = function(cell) {
+    if (cell.laser) {
+      this.stop();
+      return false;
+    }
+    switch(this.dir) {
+      case 'ne':
+        cell.change_to('/');
+        break;
+      case 'se':
+        cell.change_to('\\');
+        break;
+      case 'sw':
+        cell.change_to('/');
+        break;
+      case 'nw':
+        cell.change_to('\\');
+        break;
+    }
     this.x = cell.x;
     this.y = cell.y;
-    switch(this.dir) {
-      case 1:
-        cell.change_to('/');
-        cell.html_cell.addClass('beam');
-        cell.flash();
-    }
+    cell.html_cell.addClass('beam');
+    cell.flash();
   };
 
   ///////////////////////
@@ -55,6 +135,6 @@ function Beam(x, y, dir) {
       sw: LazerMaze.cell((this.x - 1), (this.y + 1)),
       w: LazerMaze.cell((this.x - 1), this.y)
     }
-  }
+  };
 
 }
