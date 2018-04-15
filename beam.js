@@ -15,8 +15,8 @@ function Beam(x, y, dir) {
   };
 
   this.bonk = function() {
-    //TODO
-    // Sound.play(x, y)
+    console.log('bonk')
+    Sound.play(this.x, ((this.y * -1) + LazerMaze.height))
   };
 
   this.move = function() {
